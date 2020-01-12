@@ -9,6 +9,8 @@ public class GuiTexture
 
 	readonly GameObject textureDisplay;
 
+	public Defines.ColorThreshold[] colorSteps;
+
 	public GuiTexture(GameObject display)
 	{
 		textureDisplay = display;
@@ -55,6 +57,6 @@ public class GuiTexture
 		Defines.MapParams mapSize)
 	{
 		var heightMap = MultilayerGeneration.Generate(generatorLayers, mapSize);
-		return TextureGenerator.Generate(heightMap);
+		return TextureGenerator.Generate(colorSteps, heightMap);
 	}
 }

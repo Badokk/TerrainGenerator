@@ -48,5 +48,13 @@ public static class Defines
 
 	public static int UnityUnitsToPixelRatio = 100;
 	public static Material baseMapMaterial = Resources.Load<Material>("Materials/BaseMapMaterial");
+
+	[System.Serializable]
+	public class ColorThreshold
+	{
+		[Range(0, 1)]
+		public float heightFrom;
+		public Color color;
+	}
 }
 
