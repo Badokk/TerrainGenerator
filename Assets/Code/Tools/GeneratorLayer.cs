@@ -43,5 +43,29 @@ public class MultilayerGeneration
                 map[i, j] = (map[i, j] - minValue) / maxValue;
     }
 
+    public static Defines.GeneratorLayer GetRandomLayer(System.Random rng)
+    {
+        Defines.GeneratorLayer result = new Defines.GeneratorLayer {
+            function = (GeneratingFunctionType)rng.Next(
+                System.Enum.GetValues(typeof(GeneratingFunctionType)).Length),
+            scale = rng.Next(5, 500),
+            significance = (float)rng.NextDouble() % 1f,
+            offset = new Vector2((float)rng.NextDouble(), (float)rng.NextDouble())
+        };
 
+        return result;
+    }
+
+    public static Defines.GeneratorLayer[] GetRandomLayers(int seed, int layerNum)
+    {
+        Defines.GeneratorLayer[] result = new Defines.GeneratorLayer[layerNum];
+        var rng = new System.Random(seed);
+
+        for (int i = 0; i < layerNum; i++)
+        {
+            result[i] = GetRandomLayer(rng);
+        }
+
+        return result;
+    }
 }

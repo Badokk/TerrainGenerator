@@ -37,5 +37,10 @@ public class MapGeneratorEditor : Editor
         {
             guiScript.GenerateMesh();
         }
+
+        if (GUILayout.Button("Generate layer params"))
+        {
+            guiScript.MakeRandomLayers();
+        }
     }
 }
