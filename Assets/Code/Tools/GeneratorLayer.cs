@@ -10,7 +10,7 @@ public class MultilayerGeneration
         float[,] result = new float[mapSize.width, mapSize.height];
         foreach (Defines.GeneratorLayer layer in layerParams)
         {
-            System.Func<float, float, float> generatorMethod = GeneratorMethods.ChooseFunc(layer.function, layer.scale);
+            System.Func<float, float, float> generatorMethod = GeneratorMethods.ChooseFunc(layer);
             float[,] map = HeightMapAssembler.AssembleHeightMap(mapSize, generatorMethod);
 
             // prone to change when I find an elegant way of doing this (Zip?)

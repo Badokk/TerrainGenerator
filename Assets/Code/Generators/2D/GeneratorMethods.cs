@@ -33,20 +33,27 @@ public class GeneratorMethods
         return Mathf.Abs((x % 1 + y % 1));
     }
 
-    public static System.Func<float, float, float> ChooseFunc(GeneratingFunctionType input, float scale)
+    public static System.Func<float, float, float> ChooseFunc(Defines.GeneratorLayer layerParams)
     {
-        switch(input)
+        var scale = layerParams.scale;
+        var offset = layerParams.offset;
+        var funcType = layerParams.function;
+        switch (funcType)
         {
         case GeneratingFunctionType.Sines:
-            return (x, y) => GeneratorMethods.Sines(x / scale, y / scale);
+            return (x, y) => GeneratorMethods.Sines(
+                (x+offset.x) / scale, (y + offset.y) / scale);
         case GeneratingFunctionType.DiagLines:
-            return (x, y) => GeneratorMethods.DiagonalLines(x, y, scale);
+            return (x, y) => GeneratorMethods.DiagonalLines(
+                (x + offset.x), (y + offset.y), scale);
         case GeneratingFunctionType.Perlin:
-            return (x, y) => GeneratorMethods.BasicPerlin(x / scale, y / scale);
+            return (x, y) => GeneratorMethods.BasicPerlin(
+                (x + offset.x) / scale, (y + offset.y) / scale);
         case GeneratingFunctionType.Squares:
-            return (x, y) => GeneratorMethods.Squares(x / scale, y / scale);
+            return (x, y) => GeneratorMethods.Squares(
+                (x + offset.x) / scale, (y + offset.y) / scale);
         default:
-            return (x, y) => 1 / (x / scale + y / scale);
+            return (x, y) => 1 / ((x + offset.x) / scale + (y + offset.y) / scale);
         }
     }
 }
