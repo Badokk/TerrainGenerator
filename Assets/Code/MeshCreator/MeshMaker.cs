@@ -16,7 +16,7 @@ public class MeshMaker : MonoBehaviour
 		var colors = new Color[vertices.Length];
 		for (int i = 0; i < colors.Length; i++)
 			colors[i] = Color.Lerp(
-				Color.magenta, Color.blue, samples[i % samples.GetLength(0), i / samples.GetLength(0)]);
+				Color.blue, Color.white, samples[i % samples.GetLength(0), i / samples.GetLength(0)]);
 
 		Mesh mesh = new Mesh
 		{

@@ -9,10 +9,11 @@ public class GuiTexture
 
 	readonly GameObject textureDisplay;
 
-	public Defines.ColorThreshold[] colorSteps;
+	Defines.ColorThreshold[] colorSteps;
 
-	public GuiTexture(GameObject display)
+	public GuiTexture(GameObject display, Defines.ColorThreshold[] colorSteps)
 	{
+		this.colorSteps = colorSteps;
 		textureDisplay = display;
 		Init();
 	}

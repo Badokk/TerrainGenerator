@@ -25,6 +25,8 @@ public class GuiScript : MonoBehaviour
     [Range(1, 10)]
     public int randomLayerNumberTo = 5;
 
+    public Defines.ColorThreshold[] colorSteps;
+
     // Use this for initialization
     void Start()
     {
@@ -33,19 +35,17 @@ public class GuiScript : MonoBehaviour
 
     public void Init()
     {
-        guiTexture = new GuiTexture(texturePreview);
+        guiTexture = new GuiTexture(texturePreview, colorSteps);
         guiMesh = new GuiMesh(meshPreview);
     }
 
     public void DrawTexture()
     { 
-        if (guiTexture == null) guiTexture = new GuiTexture(texturePreview);
         guiTexture.DrawTexture(layerParams.Take(layersToUse), mapSize);
     }
 
     public void GenerateMesh()
     {
-        if (guiMesh == null) guiMesh = new GuiMesh(meshPreview);
         guiMesh.UpdateMesh(layerParams.Take(layersToUse), mapSize);
     }
 
