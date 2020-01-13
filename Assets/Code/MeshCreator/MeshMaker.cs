@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MeshMaker : MonoBehaviour
 {
+	// TODO : this is working well, but slowly. Will need to think about optimizing it
 
 	public static Mesh ConstructMeshFrom(
 		float[,] heightMap, Defines.MeshParams meshParams)
@@ -36,13 +37,10 @@ public class MeshMaker : MonoBehaviour
 		int height = map.GetLength(1) / samplingRate;
 		float[,] result = new float[width, height];
 
-		Debug.LogWarning("Map Size: " + width + " " + height);
-		Debug.LogWarning("Size: " + width + " " + height);
 		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
 			{
-				Debug.Log(x + " " + y);
 				result[x, y] = map[x*samplingRate, y*samplingRate];
 			}
 		}

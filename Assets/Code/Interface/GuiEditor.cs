@@ -42,5 +42,30 @@ public class MapGeneratorEditor : Editor
         {
             guiScript.MakeRandomLayers();
         }
+
+        if (GUILayout.Button("LET THERE BE CUBE"))
+        {
+            guiScript.DrawVoxel();
+        }
+
+        if (GUILayout.Button("LET THERE BE CUBES"))
+        {
+            guiScript.DrawSomeRandomColoredVoxels();
+        }
+
+        if (GUILayout.Button("LET THERE BE A PLANE OF CUBES"))
+        {
+            guiScript.DrawPlaneOfVoxels();
+        }
+
+        if (GUILayout.Button("LET THERE BE A SPAAACE OF CUBES"))
+        {
+            guiScript.DrawVoxelSpace();
+        }
+
+        if (GUILayout.Button("LET THERE BE A WORLD OF CUBES"))
+        {
+            guiScript.DrawVoxelSpaceLimitedByHeightMap();
+        }
     }
 }

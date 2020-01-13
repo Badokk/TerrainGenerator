@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GeneratingFunctionType
+public enum GeneratingFunctionType2d
 {
     Sines,
     DiagLines,
@@ -10,7 +10,7 @@ public enum GeneratingFunctionType
     Squares
 };
 
-public class GeneratorMethods
+public class GeneratorMethods2d
 {
     // This is supposed to be a place for whatever random/pattern/noise generating functions
     public static float DiagonalLines(float x, float y, float scale)
@@ -40,17 +40,17 @@ public class GeneratorMethods
         var funcType = layerParams.function;
         switch (funcType)
         {
-        case GeneratingFunctionType.Sines:
-            return (x, y) => GeneratorMethods.Sines(
+        case GeneratingFunctionType2d.Sines:
+            return (x, y) => GeneratorMethods2d.Sines(
                 (x+offset.x) / scale, (y + offset.y) / scale);
-        case GeneratingFunctionType.DiagLines:
-            return (x, y) => GeneratorMethods.DiagonalLines(
+        case GeneratingFunctionType2d.DiagLines:
+            return (x, y) => GeneratorMethods2d.DiagonalLines(
                 (x + offset.x), (y + offset.y), scale);
-        case GeneratingFunctionType.Perlin:
-            return (x, y) => GeneratorMethods.BasicPerlin(
+        case GeneratingFunctionType2d.Perlin:
+            return (x, y) => GeneratorMethods2d.BasicPerlin(
                 (x + offset.x) / scale, (y + offset.y) / scale);
-        case GeneratingFunctionType.Squares:
-            return (x, y) => GeneratorMethods.Squares(
+        case GeneratingFunctionType2d.Squares:
+            return (x, y) => GeneratorMethods2d.Squares(
                 (x + offset.x) / scale, (y + offset.y) / scale);
         default:
             return (x, y) => 1 / ((x + offset.x) / scale + (y + offset.y) / scale);

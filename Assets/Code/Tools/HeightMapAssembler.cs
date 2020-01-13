@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class HeightMapAssembler
 {
-    public static float[,] AssembleHeightMap(Defines.MapParams mapSize, System.Func<float, float, float> function)
+    public static float[,] AssembleHeightMap(
+        Defines.MapParams mapSize, System.Func<float, float, float> function)
     {
         float[,] map = new float[mapSize.width, mapSize.height];
 
@@ -18,5 +19,25 @@ public class HeightMapAssembler
         }
 
         return map;
+    }
+
+    // this thing needs to be streamlined, same way 2d height map is being created
+    public static float[,,] AssembleSpaceMap(
+        Defines.MapParams mapSize)
+    {
+        float[,,] space = new float[mapSize.width, mapSize.height, mapSize.depth];
+
+        for (int z = 0; z < mapSize.depth; z++)
+        {
+            for (int y = 0; y < mapSize.height; y++)
+            {
+                for (int x = 0; x < mapSize.width; x++)
+                {
+                    space[x, y, z] = GeneratorMethods3d.Sines(x, y, z);
+                }
+            }
+        }
+
+        return space;
     }
 }

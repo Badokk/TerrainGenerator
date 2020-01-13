@@ -9,6 +9,7 @@ public class GuiScript : MonoBehaviour
     public bool textureAutoUpdate = false;
     public GameObject meshPreview;
     public bool meshAutoUpdate = false;
+    public GameObject voxelPreview;
 
     public Defines.MapParams mapSize;
     [Range(0, 10)]
@@ -17,6 +18,7 @@ public class GuiScript : MonoBehaviour
 
     public GuiTexture guiTexture;
     public GuiMesh guiMesh;
+    public GuiVoxel guiVoxel;
 
     public bool rngSeedFromTime = true;
     public int rngSeedValue = 0;
@@ -37,6 +39,7 @@ public class GuiScript : MonoBehaviour
     {
         guiTexture = new GuiTexture(texturePreview, colorSteps);
         guiMesh = new GuiMesh(meshPreview);
+        guiVoxel = new GuiVoxel(voxelPreview);
     }
 
     public void DrawTexture()
@@ -59,5 +62,35 @@ public class GuiScript : MonoBehaviour
 
         layersToUse = rng.Next(randomLayerNumberFrom, randomLayerNumberTo);
         layerParams = MultilayerGeneration.GetRandomLayers(rng.Next(), 10);
+        DrawTexture();
+        GenerateMesh();
+        DrawPlaneOfVoxels();
+    }
+
+    public int voxelNum = 10;
+
+    public void DrawVoxel()
+    {
+        guiVoxel.UpdateMesh();
+    }
+
+    public void DrawSomeRandomColoredVoxels()
+    {
+        guiVoxel.UpdateMeshWithManyCubesRandomColors(voxelNum);
+    }
+
+    public void DrawPlaneOfVoxels()
+    {
+        guiVoxel.UpdateMeshWithLayerOfCubesFromHeightMap(layerParams.Take(layersToUse), mapSize);
+    }
+
+    public void DrawVoxelSpace()
+    {
+        guiVoxel.UpdateMeshFrom3d(mapSize);
+    }
+
+    public void DrawVoxelSpaceLimitedByHeightMap()
+    {
+        guiVoxel.UpdateMeshFrom3dBoundedByHeightMap(layerParams.Take(layersToUse), mapSize);
     }
 }

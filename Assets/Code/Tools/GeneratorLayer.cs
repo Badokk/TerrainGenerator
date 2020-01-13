@@ -10,7 +10,7 @@ public class MultilayerGeneration
         float[,] result = new float[mapSize.width, mapSize.height];
         foreach (Defines.GeneratorLayer layer in layerParams)
         {
-            System.Func<float, float, float> generatorMethod = GeneratorMethods.ChooseFunc(layer);
+            System.Func<float, float, float> generatorMethod = GeneratorMethods2d.ChooseFunc(layer);
             float[,] map = HeightMapAssembler.AssembleHeightMap(mapSize, generatorMethod);
 
             // prone to change when I find an elegant way of doing this (Zip?)
@@ -46,8 +46,8 @@ public class MultilayerGeneration
     public static Defines.GeneratorLayer GetRandomLayer(System.Random rng)
     {
         Defines.GeneratorLayer result = new Defines.GeneratorLayer {
-            function = (GeneratingFunctionType)rng.Next(
-                System.Enum.GetValues(typeof(GeneratingFunctionType)).Length),
+            function = (GeneratingFunctionType2d)rng.Next(
+                System.Enum.GetValues(typeof(GeneratingFunctionType2d)).Length),
             scale = rng.Next(5, 500),
             significance = (float)rng.NextDouble() % 1f,
             offset = new Vector2((float)rng.NextDouble(), (float)rng.NextDouble())

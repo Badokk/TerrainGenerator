@@ -10,11 +10,19 @@ public static class Defines
 		public int width = 500;
 		[Range(0, 1000)]
 		public int height = 500;
+		[Range(0, 100)]
+		public int depth = 10;
 
 		public MapParams(int w, int h)
 		{
 			width = Mathf.Max(0, Mathf.Min(1000, w));
 			height = Mathf.Max(0, Mathf.Min(1000, h));
+		}
+		public static MapParams operator /(MapParams mp1, int i)
+		{
+			mp1.width /= i;
+			mp1.height /= i;
+			return mp1;
 		}
 	}
 
@@ -39,7 +47,7 @@ public static class Defines
 	[System.Serializable]
 	public class GeneratorLayer
 	{
-		public GeneratingFunctionType function;
+		public GeneratingFunctionType2d function;
 		public float scale;
 		[Range(0, 1)]
 		public float significance;
