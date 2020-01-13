@@ -30,8 +30,8 @@ public class GuiMesh
 		renderer.material = Defines.baseMapMaterial;
 	}
 
-	public void UpdateMesh(
-		IEnumerable<Defines.GeneratorLayer> generatorLayers,
+	public void UpdateMesh(Defines.ColorThreshold[] colorSteps,
+	IEnumerable<Defines.GeneratorLayer> generatorLayers,
 		Defines.MapParams mapSize)
 	{
 		Init();
@@ -42,6 +42,6 @@ public class GuiMesh
 
 		var heightMap = MultilayerGeneration.Generate(generatorLayers, mapSize);
 
-		filter.mesh = MeshMaker.ConstructMeshFrom(heightMap, meshParams);
+		filter.mesh = MeshMaker.ConstructMeshFrom(colorSteps, heightMap, meshParams);
 	}
 }

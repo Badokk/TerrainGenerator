@@ -6,7 +6,7 @@ public class MeshMaker : MonoBehaviour
 {
 	// TODO : this is working well, but slowly. Will need to think about optimizing it
 
-	public static Mesh ConstructMeshFrom(
+	public static Mesh ConstructMeshFrom(Defines.ColorThreshold[] colorParams,
 		float[,] heightMap, Defines.MeshParams meshParams)
 	{
 		var samples = GetHeightSamplesFromMap(heightMap, meshParams.samplingRate);
@@ -16,8 +16,7 @@ public class MeshMaker : MonoBehaviour
 		// TODO : pass lambda to retrieve colors
 		var colors = new Color[vertices.Length];
 		for (int i = 0; i < colors.Length; i++)
-			colors[i] = Color.Lerp(
-				Color.blue, Color.white, samples[i % samples.GetLength(0), i / samples.GetLength(0)]);
+			colors[i] = ColorPicker.GetColor(colorParams, samples[i % samples.GetLength(0), i / samples.GetLength(0)]);
 
 		Mesh mesh = new Mesh
 		{
@@ -58,7 +57,7 @@ public class MeshMaker : MonoBehaviour
 		{
 			for (int x = 0; x < width; x++)
 			{
-				result[width*height -1 - (x + y*width)] = new Vector3((float)x*vertSpacing, (float)y * vertSpacing, map[x, y] * maxDepth);
+				result[(x + y*width)] = new Vector3((float)x*vertSpacing, (float)y * vertSpacing, -1f *map[x, y] * maxDepth);
 			}
 		}
 

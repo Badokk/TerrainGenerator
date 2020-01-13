@@ -16,24 +16,10 @@ public class TextureGenerator
         {
             for (int x = 0; x < width; x++)
             {
-                colorMap[y * width + x] = Color.black;
+                colorMap[y * width + x] = ColorPicker.GetColor(colorParams, heightMap[x, y]);
             }
         }
-
-        foreach (Defines.ColorThreshold color in colorParams)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    if (heightMap[x, y] > color.heightFrom)
-                    {
-                        colorMap[y * width + x] = color.color;
-                    }
-                }
-            }
-        }
-
+        
         result.SetPixels(colorMap);
         result.Apply();
         return result;

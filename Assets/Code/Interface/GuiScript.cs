@@ -39,7 +39,7 @@ public class GuiScript : MonoBehaviour
     {
         guiTexture = new GuiTexture(texturePreview, colorSteps);
         guiMesh = new GuiMesh(meshPreview);
-        guiVoxel = new GuiVoxel(voxelPreview);
+        guiVoxel = new GuiVoxel(voxelPreview, colorSteps);
     }
 
     public void DrawTexture()
@@ -49,7 +49,7 @@ public class GuiScript : MonoBehaviour
 
     public void GenerateMesh()
     {
-        guiMesh.UpdateMesh(layerParams.Take(layersToUse), mapSize);
+        guiMesh.UpdateMesh(colorSteps, layerParams.Take(layersToUse), mapSize);
     }
 
     public void MakeRandomLayers()

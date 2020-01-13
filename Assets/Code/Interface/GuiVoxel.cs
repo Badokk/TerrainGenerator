@@ -7,13 +7,15 @@ public class GuiVoxel
 	readonly GameObject voxelDisplay;
 	MeshRenderer renderer;
 	MeshFilter filter;
+	Defines.ColorThreshold[] colorParams;
 
 	[Range(0,1)]
 	public float spaceCreationThreshold = 0.5f;
 
-	public GuiVoxel(GameObject display)
+	public GuiVoxel(GameObject display, Defines.ColorThreshold[] colors)
 	{
 		voxelDisplay = display;
+		colorParams = colors;
 		Init();
 	}
 
@@ -119,7 +121,7 @@ public class GuiVoxel
 					if (heightMap[x,y]*mapSize.depth > z && spaceMap[x, y, z] > spaceCreationThreshold)
 					{
 						vertices.Add(new Vector3(x / 50, y / 50, z));
-						colors.Add(Color.Lerp(Color.blue, Color.white, heightMap[x, y]));
+						colors.Add(ColorPicker.GetColor(colorParams, heightMap[x, y]));
 					}
 				}
 			}

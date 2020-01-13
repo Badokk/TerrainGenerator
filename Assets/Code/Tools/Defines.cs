@@ -62,6 +62,8 @@ public static class Defines
 	{
 		[Range(0, 1)]
 		public float heightFrom;
+		[Range(0, 1)]
+		public float heightTo;
 		public Color color;
 	}
 }
