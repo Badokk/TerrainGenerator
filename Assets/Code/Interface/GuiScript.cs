@@ -46,7 +46,7 @@ public class GuiScript : MonoBehaviour
 
     public void GenerateMesh()
     {
-        guiMesh.UpdateMesh(layerParams.Take(layersToUse), mapSize);
+        guiMesh.UpdateMesh(colorSteps, layerParams.Take(layersToUse), mapSize);
     }
 
     public void MakeRandomLayers()

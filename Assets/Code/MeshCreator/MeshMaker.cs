@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class MeshMaker : MonoBehaviour
 {
-
-	public static Mesh ConstructMeshFrom(
+	public static Mesh ConstructMeshFrom(Defines.ColorThreshold[] colorParams,
 		float[,] heightMap, Defines.MeshParams meshParams)
 	{
 		var samples = GetHeightSamplesFromMap(heightMap, meshParams.samplingRate);
@@ -15,8 +14,7 @@ public class MeshMaker : MonoBehaviour
 		// TODO : pass lambda to retrieve colors
 		var colors = new Color[vertices.Length];
 		for (int i = 0; i < colors.Length; i++)
-			colors[i] = Color.Lerp(
-				Color.blue, Color.white, samples[i % samples.GetLength(0), i / samples.GetLength(0)]);
+			colors[i] = ColorPicker.GetColor(colorParams, samples[i % samples.GetLength(0), i / samples.GetLength(0)]);
 
 		Mesh mesh = new Mesh
 		{
