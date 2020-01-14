@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class GuiVoxel
 {
 	readonly GameObject voxelDisplay;
+	readonly Defines.ColorThreshold[] colorParams;
 	MeshRenderer renderer;
 	MeshFilter filter;
-	Defines.ColorThreshold[] colorParams;
 
 	[Range(0,1)]
 	public float spaceCreationThreshold = 0.5f;
@@ -55,12 +55,8 @@ public class GuiVoxel
 		filter.mesh = mesh;
 	}
 
-	public void UpdateMeshWithLayerOfCubesFromHeightMap(
-		IEnumerable<Defines.GeneratorLayer> generatorLayers,
-		Defines.MapParams mapSize)
+	public void UpdateMeshWithLayerOfCubesFromHeightMap(float[,] heightMap, Defines.MapParams mapSize)
 	{
-		var heightMap = MultilayerGeneration.Generate(generatorLayers, mapSize);
-
 		var vertices = new List<Vector3>();
 		var colors = new List<Color>();
 
@@ -102,11 +98,8 @@ public class GuiVoxel
 
 		filter.mesh = mesh;
 	}
-	public void UpdateMeshFrom3dBoundedByHeightMap(
-		IEnumerable<Defines.GeneratorLayer> generatorLayers, 
-		Defines.MapParams mapSize)
+	public void UpdateMeshFrom3dBoundedByHeightMap(float[,] heightMap, Defines.MapParams mapSize)
 	{
-		var heightMap = MultilayerGeneration.Generate(generatorLayers, mapSize);
 		var spaceMap = HeightMapAssembler.AssembleSpaceMap(mapSize);
 		var vertices = new List<Vector3>();
 		var colors = new List<Color>();

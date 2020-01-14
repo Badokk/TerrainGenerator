@@ -29,6 +29,9 @@ public class GuiScript : MonoBehaviour
 
     public Defines.ColorThreshold[] colorSteps;
 
+    // Privates
+    float[,] heightMap;
+
     // Use this for initialization
     void Start()
     {
@@ -38,18 +41,24 @@ public class GuiScript : MonoBehaviour
     public void Init()
     {
         guiTexture = new GuiTexture(texturePreview, colorSteps);
-        guiMesh = new GuiMesh(meshPreview);
+        guiMesh = new GuiMesh(meshPreview, colorSteps);
         guiVoxel = new GuiVoxel(voxelPreview, colorSteps);
+        GenerateHeightMap();
+    }
+
+    void GenerateHeightMap()
+    {
+        heightMap = MultilayerGeneration.Generate(layerParams.Take(layersToUse), mapSize);
     }
 
     public void DrawTexture()
     { 
-        guiTexture.DrawTexture(layerParams.Take(layersToUse), mapSize);
+        guiTexture.DrawTexture(heightMap);
     }
 
     public void GenerateMesh()
     {
-        guiMesh.UpdateMesh(colorSteps, layerParams.Take(layersToUse), mapSize);
+        guiMesh.UpdateMesh(heightMap);
     }
 
     public void MakeRandomLayers()
@@ -62,6 +71,7 @@ public class GuiScript : MonoBehaviour
 
         layersToUse = rng.Next(randomLayerNumberFrom, randomLayerNumberTo);
         layerParams = MultilayerGeneration.GetRandomLayers(rng.Next(), 10);
+        GenerateHeightMap();
         DrawTexture();
         GenerateMesh();
         DrawPlaneOfVoxels();
@@ -81,7 +91,7 @@ public class GuiScript : MonoBehaviour
 
     public void DrawPlaneOfVoxels()
     {
-        guiVoxel.UpdateMeshWithLayerOfCubesFromHeightMap(layerParams.Take(layersToUse), mapSize);
+        guiVoxel.UpdateMeshWithLayerOfCubesFromHeightMap(heightMap, mapSize);
     }
 
     public void DrawVoxelSpace()
@@ -91,6 +101,6 @@ public class GuiScript : MonoBehaviour
 
     public void DrawVoxelSpaceLimitedByHeightMap()
     {
-        guiVoxel.UpdateMeshFrom3dBoundedByHeightMap(layerParams.Take(layersToUse), mapSize);
+        guiVoxel.UpdateMeshFrom3dBoundedByHeightMap(heightMap, mapSize);
     }
 }

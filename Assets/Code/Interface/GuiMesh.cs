@@ -4,14 +4,16 @@ using System.Collections.Generic;
 [System.Serializable]
 public class GuiMesh
 {
+	public Defines.MeshParams meshParams;
+
 	readonly GameObject meshDisplay;
+	readonly Defines.ColorThreshold[] colorSteps;
 	MeshRenderer renderer;
 	MeshFilter filter;
 
-	public Defines.MeshParams meshParams;
-
-	public GuiMesh(GameObject display)
+	public GuiMesh(GameObject display, Defines.ColorThreshold[] colorSteps)
 	{
+		this.colorSteps = colorSteps;
 		meshParams = new Defines.MeshParams(10, 1, 1);
 		meshDisplay = display;
 		Init();
@@ -30,17 +32,13 @@ public class GuiMesh
 		renderer.material = Defines.baseMapMaterial;
 	}
 
-	public void UpdateMesh(Defines.ColorThreshold[] colorSteps,
-	IEnumerable<Defines.GeneratorLayer> generatorLayers,
-		Defines.MapParams mapSize)
+	public void UpdateMesh(float[,] heightMap)
 	{
 		Init();
 		meshDisplay.transform.position = new Vector3(
-			mapSize.width * meshParams.vertSpacing / Defines.UnityUnitsToPixelRatio,
-			mapSize.height * meshParams.vertSpacing / Defines.UnityUnitsToPixelRatio,
+			heightMap.GetLength(0) * meshParams.vertSpacing / Defines.UnityUnitsToPixelRatio,
+			heightMap.GetLength(1) * meshParams.vertSpacing / Defines.UnityUnitsToPixelRatio,
 			0);
-
-		var heightMap = MultilayerGeneration.Generate(generatorLayers, mapSize);
 
 		filter.mesh = MeshMaker.ConstructMeshFrom(colorSteps, heightMap, meshParams);
 	}

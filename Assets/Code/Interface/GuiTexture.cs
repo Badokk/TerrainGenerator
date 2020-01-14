@@ -7,8 +7,7 @@ public class GuiTexture
 	public bool showSeparateLayers = false;
 
 	readonly GameObject textureDisplay;
-
-	Defines.ColorThreshold[] colorSteps;
+	readonly Defines.ColorThreshold[] colorSteps;
 
 	public GuiTexture(GameObject display, Defines.ColorThreshold[] colorSteps)
 	{
@@ -19,11 +18,9 @@ public class GuiTexture
 
 	/**Methods**/
 	// Public methods
-	public void DrawTexture(
-		IEnumerable<Defines.GeneratorLayer> generatorLayers,
-		Defines.MapParams mapSize)
+	public void DrawTexture(float[,] heightMap)
 	{
-		Texture2D texture = MakeTexture(generatorLayers, mapSize);
+		Texture2D texture = MakeTexture(heightMap);
 		DisplayTexture(texture);
 	}
 
@@ -52,11 +49,8 @@ public class GuiTexture
 			0);
 	}
 
-	public Texture2D MakeTexture(
-		IEnumerable<Defines.GeneratorLayer> generatorLayers,
-		Defines.MapParams mapSize)
+	public Texture2D MakeTexture(float[,] heightMap)
 	{
-		var heightMap = MultilayerGeneration.Generate(generatorLayers, mapSize);
 		return TextureGenerator.Generate(colorSteps, heightMap);
 	}
 }
