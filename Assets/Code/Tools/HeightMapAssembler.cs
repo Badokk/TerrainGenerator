@@ -5,7 +5,7 @@ using UnityEngine;
 public class HeightMapAssembler
 {
     public static float[,] AssembleHeightMap(
-        Defines.MapParams mapSize, System.Func<float, float, float> function)
+        Defines.MapParams mapSize, System.Func<float, float, float> function, Vector3 globalScale)
     {
         float[,] map = new float[mapSize.width, mapSize.height];
 
@@ -14,7 +14,7 @@ public class HeightMapAssembler
         {
             for (int x = 0; x < mapSize.width; x++)
             {
-                map[x, y] = function(x, y);
+                map[x, y] = function(x * globalScale.x, y * globalScale.y);
             }
         }
 

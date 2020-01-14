@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class MultilayerGeneration
 {
-    public static float[,] Generate(IEnumerable<Defines.GeneratorLayer> layerParams, Defines.MapParams mapSize)
+    public static float[,] Generate(IEnumerable<Defines.GeneratorLayer> layerParams, Defines.MapParams mapSize, Vector3 globalScale)
     {
         float[,] result = new float[mapSize.width, mapSize.height];
         foreach (Defines.GeneratorLayer layer in layerParams)
         {
             System.Func<float, float, float> generatorMethod = GeneratorMethods2d.ChooseFunc(layer);
-            float[,] map = HeightMapAssembler.AssembleHeightMap(mapSize, generatorMethod);
+            float[,] map = HeightMapAssembler.AssembleHeightMap(mapSize, generatorMethod, globalScale);
 
             // prone to change when I find an elegant way of doing this (Zip?)
             for (int i = 0; i < mapSize.width; i++)

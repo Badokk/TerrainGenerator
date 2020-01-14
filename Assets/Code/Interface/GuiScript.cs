@@ -15,6 +15,7 @@ public class GuiScript : MonoBehaviour
     [Range(0, 10)]
     public int layersToUse;
     public Defines.GeneratorLayer[] layerParams;
+    public Vector3 globalScale = new Vector3( 1, 1, 1 );
 
     public GuiTexture guiTexture;
     public GuiMesh guiMesh;
@@ -46,9 +47,9 @@ public class GuiScript : MonoBehaviour
         GenerateHeightMap();
     }
 
-    void GenerateHeightMap()
+    public void GenerateHeightMap()
     {
-        heightMap = MultilayerGeneration.Generate(layerParams.Take(layersToUse), mapSize);
+        heightMap = MultilayerGeneration.Generate(layerParams.Take(layersToUse), mapSize, globalScale);
     }
 
     public void DrawTexture()

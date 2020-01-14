@@ -15,6 +15,7 @@ public class MapGeneratorEditor : Editor
         {
             if (guiScript.textureAutoUpdate)
             {
+                guiScript.GenerateHeightMap();
                 guiScript.DrawTexture();
             }
             if (guiScript.meshAutoUpdate)
