@@ -13,10 +13,28 @@ public static class Defines
 		[Range(0, 100)]
 		public int depth = 10;
 
+		// ToDo: I'm not certain, but I think there's no actual support for global offset in code,
+		// and regardless of it, maps will be created from 0,0,0
+		public Vector3 offset = new Vector3(0,0,0);
+
 		public MapParams(int w, int h)
 		{
 			width = Mathf.Max(0, Mathf.Min(1000, w));
 			height = Mathf.Max(0, Mathf.Min(1000, h));
+		}
+		public MapParams(Vector3 size)
+		{
+			width = Mathf.Max(0, Mathf.Min(1000, (int)size.x));
+			height = Mathf.Max(0, Mathf.Min(1000, (int)size.y));
+			depth = Mathf.Max(0, Mathf.Min(1000, (int)size.z));
+		}
+		public MapParams(Vector3 size, Vector3 off)
+		{
+			width = Mathf.Max(0, Mathf.Min(1000, (int)size.x));
+			height = Mathf.Max(0, Mathf.Min(1000, (int)size.y));
+			depth = Mathf.Max(0, Mathf.Min(1000, (int)size.z));
+
+			offset = off;
 		}
 		public static MapParams operator /(MapParams mp1, int i)
 		{

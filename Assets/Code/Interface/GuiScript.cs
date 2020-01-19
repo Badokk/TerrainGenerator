@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 [ExecuteInEditMode]
 public class GuiScript : MonoBehaviour
 {
+    public bool heightMapAutoUpdate = false;
     public GameObject texturePreview;
     public bool textureAutoUpdate = false;
     public GameObject meshPreview;
@@ -15,11 +16,16 @@ public class GuiScript : MonoBehaviour
     [Range(0, 10)]
     public int layersToUse;
     public Defines.GeneratorLayer[] layerParams;
-    public Vector3 globalScale = new Vector3( 1, 1, 1 );
+    public Vector3 globalScale = new Vector3(1, 1, 1);
+    public Vector3 samplingRate = new Vector3(20, 20, 1);
 
     public GuiTexture guiTexture;
     public GuiMesh guiMesh;
     public GuiVoxel guiVoxel;
+    [Range(0, 1)]
+    public float spaceCreationThreshold = 0.5f;
+    [Range(10, 100)]
+    public int chunkSize = 50;
 
     public bool rngSeedFromTime = true;
     public int rngSeedValue = 0;
@@ -43,7 +49,7 @@ public class GuiScript : MonoBehaviour
     {
         guiTexture = new GuiTexture(texturePreview, colorSteps);
         guiMesh = new GuiMesh(meshPreview, colorSteps);
-        guiVoxel = new GuiVoxel(voxelPreview, colorSteps);
+        guiVoxel = new GuiVoxel(voxelPreview, colorSteps, chunkSize);
         GenerateHeightMap();
     }
 
@@ -53,7 +59,7 @@ public class GuiScript : MonoBehaviour
     }
 
     public void DrawTexture()
-    { 
+    {
         guiTexture.DrawTexture(heightMap);
     }
 
@@ -75,33 +81,36 @@ public class GuiScript : MonoBehaviour
         GenerateHeightMap();
         DrawTexture();
         GenerateMesh();
-        DrawPlaneOfVoxels();
+        DrawVoxelSpaceLimitedByHeightMapOptimized();
     }
 
     public int voxelNum = 10;
 
-    public void DrawVoxel()
-    {
-        guiVoxel.UpdateMesh();
-    }
-
-    public void DrawSomeRandomColoredVoxels()
-    {
-        guiVoxel.UpdateMeshWithManyCubesRandomColors(voxelNum);
-    }
-
-    public void DrawPlaneOfVoxels()
-    {
-        guiVoxel.UpdateMeshWithLayerOfCubesFromHeightMap(heightMap, mapSize);
-    }
-
-    public void DrawVoxelSpace()
-    {
-        guiVoxel.UpdateMeshFrom3d(mapSize);
-    }
-
     public void DrawVoxelSpaceLimitedByHeightMap()
     {
-        guiVoxel.UpdateMeshFrom3dBoundedByHeightMap(heightMap, mapSize);
+        guiVoxel.UpdateMeshFrom3dBoundedByHeightMap(heightMap, mapSize, samplingRate, spaceCreationThreshold);
+    }
+    public void DrawVoxelSpaceLimitedByHeightMapOptimized()
+    {
+        // ToDo: There still seem to be some artifacts, will look into this when designing better
+        // 3d generation functions
+        System.Func<float, float, float, bool> spaceSampling =
+            (x, y, z) => GeneratorMethods3d.Sines(x, y, z) > spaceCreationThreshold;
+        guiVoxel.UpdateMeshFrom3dBoundedByHeightMapOptimized(heightMap, mapSize, samplingRate, spaceSampling);
+    }
+    public void TEST()
+    {
+        HashSet<Vector3> x = new HashSet<Vector3>();
+        Vector3 a = new Vector3(1, 2, 3);
+        Vector3 b = new Vector3(1, 2, 3);
+        Vector3 c = new Vector3(1, 3, 3);
+
+        Debug.Log(x.Count);
+        x.Add(a);
+        Debug.Log(x.Count);
+        x.Add(b);
+        Debug.Log(x.Count);
+        x.Add(c);
+        Debug.Log(x.Count);
     }
 }

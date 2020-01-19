@@ -13,9 +13,12 @@ public class MapGeneratorEditor : Editor
 
         if (DrawDefaultInspector())
         {
-            if (guiScript.textureAutoUpdate)
+            if (guiScript.heightMapAutoUpdate)
             {
                 guiScript.GenerateHeightMap();
+            }
+            if (guiScript.textureAutoUpdate)
+            {
                 guiScript.DrawTexture();
             }
             if (guiScript.meshAutoUpdate)
@@ -29,14 +32,14 @@ public class MapGeneratorEditor : Editor
             guiScript.Init();
         }
 
-        if (GUILayout.Button("Generate the map"))
+        if (GUILayout.Button("TEST"))
         {
-            guiScript.DrawTexture();
+            guiScript.TEST();
         }
 
-        if (GUILayout.Button("Update mesh"))
+        if (GUILayout.Button("Regenerate height map"))
         {
-            guiScript.GenerateMesh();
+            guiScript.GenerateHeightMap();
         }
 
         if (GUILayout.Button("Generate layer params"))
@@ -44,29 +47,23 @@ public class MapGeneratorEditor : Editor
             guiScript.MakeRandomLayers();
         }
 
-        if (GUILayout.Button("LET THERE BE CUBE"))
+        if (GUILayout.Button("Draw the map"))
         {
-            guiScript.DrawVoxel();
+            guiScript.DrawTexture();
         }
 
-        if (GUILayout.Button("LET THERE BE CUBES"))
+        if (GUILayout.Button("Draw the mesh"))
         {
-            guiScript.DrawSomeRandomColoredVoxels();
+            guiScript.GenerateMesh();
         }
 
-        if (GUILayout.Button("LET THERE BE A PLANE OF CUBES"))
-        {
-            guiScript.DrawPlaneOfVoxels();
-        }
-
-        if (GUILayout.Button("LET THERE BE A SPAAACE OF CUBES"))
-        {
-            guiScript.DrawVoxelSpace();
-        }
-
-        if (GUILayout.Button("LET THERE BE A WORLD OF CUBES"))
+        if (GUILayout.Button("Generate cube space (WARNING: EXPENSIVE)"))
         {
             guiScript.DrawVoxelSpaceLimitedByHeightMap();
+        }
+        if (GUILayout.Button("Generate cube-based space"))
+        {
+            guiScript.DrawVoxelSpaceLimitedByHeightMapOptimized();
         }
     }
 }

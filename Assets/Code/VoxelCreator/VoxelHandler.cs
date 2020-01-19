@@ -7,7 +7,7 @@ public static class VoxelHandler
      * mesh creation (probably gonna need to extract it)
      */
 
-    private static Vector3 voxelSize = new Vector3(1,1,1);
+    private static Vector3 voxelSize = new Vector3(1, 1, 1);
 
     public static List<Vector3> GetCubeVertices(Vector3 midpoint)
     {
@@ -60,7 +60,7 @@ public static class VoxelHandler
         {
             vertices = vertices.ToArray(),
             triangles = GetTrisForCube().ToArray(),
-            colors = new Color[] { color, color, color, color, color, color, color, color}
+            colors = new Color[] { color, color, color, color, color, color, color, color }
         };
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
@@ -93,6 +93,53 @@ public static class VoxelHandler
                 vertColors.Add(c);
         }
 
+        var mesh = new Mesh
+        {
+            vertices = meshVertices.ToArray(),
+            triangles = triangles.ToArray(),
+            colors = vertColors.ToArray()
+        };
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+
+        return mesh;
+    }
+
+    public static Mesh CreateMulticubeMeshOptimized(
+        float[,] heightMap, System.Func<float, float, float, bool> spaceProbeFunc,
+        Vector3 samplingRate, Defines.MapParams mapSize, Defines.ColorThreshold[] colorParams)
+    {
+        var meshVertices = new List<Vector3>();
+        var triangles = new List<int>();
+        var vertColors = new List<Color>();
+        foreach (var face in MarchingCubeFaces.GetFacesToDraw(spaceProbeFunc, heightMap, samplingRate, mapSize))
+        {
+            if (face.x >= heightMap.GetLength(0) || face.y >= heightMap.GetLength(1)) continue;
+                //Debug.Log("FACE: " + face.x + " " + face.y + " " + face.z);
+            var color = ColorPicker.GetColor(colorParams, heightMap[Mathf.Abs(Mathf.FloorToInt(face.x)), Mathf.Abs(Mathf.FloorToInt(face.y))]);
+
+            vertColors.Add(color); vertColors.Add(color); vertColors.Add(color); vertColors.Add(color);
+
+            var l = meshVertices.Count;
+
+            // ToDo: I suppose this logic could be entirely moved to GetFaceVerts(face, cubeOfOrigin)
+            var squareVerts = MarchingCubeFaces.GetFaceVerts(face);
+            if (Mathf.Floor(face.y) != face.y && spaceProbeFunc(Mathf.Floor(face.x), Mathf.Floor(face.y), Mathf.Floor(face.z)) ||
+                Mathf.Floor(face.x) != face.x && !spaceProbeFunc(Mathf.Floor(face.x), Mathf.Floor(face.y), Mathf.Floor(face.z)) ||
+                Mathf.Floor(face.z) != face.z && !spaceProbeFunc(Mathf.Floor(face.x), Mathf.Floor(face.y), Mathf.Floor(face.z)))
+            {
+                meshVertices.Add(squareVerts[0]);
+                meshVertices.Add(squareVerts[2]);
+                meshVertices.Add(squareVerts[1]);
+                meshVertices.Add(squareVerts[3]);
+            }
+            else
+                foreach (var v in squareVerts)
+                    meshVertices.Add(v);
+
+            foreach (var t in MarchingCubeFaces.trisList)
+                triangles.Add(t + l);
+        }
         var mesh = new Mesh
         {
             vertices = meshVertices.ToArray(),
